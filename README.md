@@ -1,3 +1,13 @@
+# 텔레그램 만화 크롤러 봇 만드는 중
+
+## TODO
+
+ - DB INSERT 실행
+ - USER에 나만 등록 해보기
+ - 텔레그램 API 연동
+ - 메시지 보내 보기
+ - 시간마다 호출하게 만들기
+
 # TypeScript Node Starter
 
 [![Dependency Status](https://david-dm.org/Microsoft/TypeScript-Node-Starter.svg)](https://david-dm.org/Microsoft/TypeScript-Node-Starter) [![Build Status](https://travis-ci.org/Microsoft/TypeScript-Node-Starter.svg?branch=master)](https://travis-ci.org/Microsoft/TypeScript-Node-Starter) 
