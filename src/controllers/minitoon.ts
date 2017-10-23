@@ -33,7 +33,9 @@ export let findMinitoon = function (callback: (resultMsg: string) => void, msg: 
                 .where("ep").gt(sub.ep);
             winston.log("info", "query is", { anyString: maruMangaquery.getQuery() });
             maruMangaquery.exec(function (err, res) {
-                callback(res.get("titleId") + "\n" + res.get("url"));
+                if (res) {
+                    callback(res.get("titleId") + "\n" + res.get("url"));
+                }
             });
         });
         winston.log("info", "end");
