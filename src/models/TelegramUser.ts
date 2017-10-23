@@ -32,3 +32,6 @@ const telegramUserSchema = new mongoose.Schema({
     startDate: Date,
     subscriptions: Array
 }, { timestamps: true });
+
+const TelegramUser = mongoose.model("TelegramUser", telegramUserSchema);
+export default TelegramUser;

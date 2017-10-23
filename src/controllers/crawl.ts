@@ -2,6 +2,7 @@ import * as cheerio from "cheerio";
 import { Builder, By, Key, until, Capabilities } from "selenium-webdriver";
 import * as winston from "winston";
 import { Response, Request, NextFunction } from "express";
+import { default as MaruManga, MaruMangaModel } from "../models/MaruManga";
 
 export let getCrawl = (req: Request, res: Response) => {
     crawl();
@@ -38,6 +39,16 @@ export let crawl = function () {
             if (date.indexOf(":") > 0) {
                 // date = today;
             }
+
+            const maruManga = new MaruManga({
+                titleId: titleId,
+                title: title,
+                ep: ep,
+                url: url,
+                date: date
+            });
+
+            maruManga.save();
             // Once we have our title, we'll store it to the our json object.
             primaryKey.titleId = titleId;
             json.titleId = titleId;
@@ -49,7 +60,7 @@ export let crawl = function () {
             winston.log("info", "Crawler Log Message", { anything: json });
 
             winston.log("info", "MongoDb Log Message", { anything: primaryKey });
-            // mongoInsert(primaryKey, json);
+
         });
     });
 
