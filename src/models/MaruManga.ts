@@ -18,3 +18,6 @@ const maruMangaSchema = new mongoose.Schema({
     url: String,
     date: String
 });
+
+const MaruManga = mongoose.model("MaruManga", maruMangaSchema);
+export default MaruManga;
