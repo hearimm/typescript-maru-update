@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@types/cheerio": "^0.22.3",
+    "@types/node-telegram-bot-api": "^0.28.1",
     "@types/selenium-webdriver": "^3.0.8",
     "@types/winston": "^2.3.6",
     "async": "^2.1.2",
@@ -61,7 +62,8 @@
     "lusca": "^1.4.1",
     "mongoose": "^4.6.6",
     "morgan": "^1.7.0",
-    "nodemailer": "^2.6.4",
+    "node-telegram-bot-api": "^0.29.0",
+    "nodemailer": "^4.0.1",
     "passport": "0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",

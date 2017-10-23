@@ -3,12 +3,17 @@ import { Builder, By, Key, until, Capabilities } from "selenium-webdriver";
 import * as winston from "winston";
 import { Response, Request, NextFunction } from "express";
 import { default as MaruManga, MaruMangaModel } from "../models/MaruManga";
+import { default as TelegramUser, Subscription, TelegramUserModel } from "../models/TelegramUser";
 
 export let getCrawl = (req: Request, res: Response) => {
-    crawl();
-    res.send("");
+
+    const funcCallBack = function (msg: string) {
+        res.send(msg);
+    };
+
+    crawl(funcCallBack);
 };
-export let crawl = function () {
+export let crawl = function (callback: (msg: string) => void) {
 
     const driver = new Builder()
         .withCapabilities(Capabilities.phantomjs())
@@ -26,9 +31,9 @@ export let crawl = function () {
             const titleId = data.find(".list_subject").text().trim();
             const epMatch = titleId.match(/\d*(화|권)/g);
             if (Array.isArray(epMatch)) {
-                ep = epMatch[0];
+                ep = +epMatch[0].match(/^\d*/g); // string to int >> + "123"
             } else {
-                ep = "";
+                ep = 0;
             }
             title = titleId.replace(/\d*(화|권)/g, "").trim();
             url = data.find(".gall_href > a").attr("href").trim();
@@ -37,7 +42,7 @@ export let crawl = function () {
 
             date = data.find(".gall_text_href").next().text();
             if (date.indexOf(":") > 0) {
-                // date = today;
+                // date = today
             }
 
             const maruManga = new MaruManga({
@@ -47,21 +52,14 @@ export let crawl = function () {
                 url: url,
                 date: date
             });
+            winston.log("info", "maruManga saved", { anyString: ep });
 
-            maruManga.save();
-            // Once we have our title, we'll store it to the our json object.
-            primaryKey.titleId = titleId;
-            json.titleId = titleId;
-            json.title = title;
-            json.ep = ep;
-            json.url = url;
-            json.date = date;
-
-            winston.log("info", "Crawler Log Message", { anything: json });
-
-            winston.log("info", "MongoDb Log Message", { anything: primaryKey });
-
+            maruManga.save().then(function (doc) {
+                winston.log("info", "Mongoose saved", { anyString: doc.get("title") });
+            });
         });
+
+        callback("Done");
     });
 
     driver.quit();

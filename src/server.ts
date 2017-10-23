@@ -14,6 +14,7 @@ import * as flash from "express-flash";
 import * as path from "path";
 import * as mongoose from "mongoose";
 import * as passport from "passport";
+import * as TelegramBot from "node-telegram-bot-api";
 import expressValidator = require("express-validator");
 
 
@@ -32,12 +33,53 @@ import * as homeController from "./controllers/home";
 import * as userController from "./controllers/user";
 import * as apiController from "./controllers/api";
 import * as crawlController from "./controllers/crawl";
+import * as minitoonController from "./controllers/minitoon";
 import * as contactController from "./controllers/contact";
 
 /**
  * API keys and Passport configuration.
  */
 import * as passportConfig from "./config/passport";
+
+/**
+ * Create TelegramBot server
+ */
+
+const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
+const HYUK_CHAT_ID = process.env.HYUK_CHAT_ID;
+
+
+bot.on("message", (msg: TelegramBot.Message) => {
+
+  const hi = "hi";
+  if (msg.text.toLowerCase().indexOf(hi) === 0) {
+    bot.sendMessage(msg.chat.id, "Hello dear user" + msg.from.first_name);
+  }
+
+  const bye = "bye";
+  if (msg.text.toLowerCase().includes(bye)) {
+    bot.sendMessage(msg.chat.id, "Hope to see you around again , Bye");
+  }
+
+  const crawl = "crawl";
+  if (msg.text.toLowerCase().includes(crawl)) {
+    const funcCallBack = function (resultMsg: string) {
+      bot.sendMessage(msg.chat.id, resultMsg);
+    };
+
+    crawlController.crawl(funcCallBack);
+  }
+
+  const mini = "mini";
+  if (msg.text.toLowerCase().includes(mini)) {
+    const funcCallBack = function (resultMsg: string) {
+      bot.sendMessage(msg.chat.id, resultMsg);
+    };
+
+    minitoonController.findMinitoon(funcCallBack, msg);
+  }
+
+});
 
 /**
  * Create Express server.
@@ -60,7 +102,7 @@ mongoose.connection.on("error", () => {
 /**
  * Express configuration.
  */
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 8023);
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
@@ -152,6 +194,7 @@ app.use(errorHandler());
 app.listen(app.get("port"), () => {
   console.log(("  App is running at http://localhost:%d in %s mode"), app.get("port"), app.get("env"));
   console.log("  Press CTRL-C to stop\n");
+
 });
 
 module.exports = app;

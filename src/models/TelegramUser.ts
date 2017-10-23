@@ -22,7 +22,7 @@ export type TelegramUserModel = mongoose.Document & {
 };
 export type Subscription = {
     title: string,
-    ep: string,
+    ep: number,
     sendDate: Date
 };
 

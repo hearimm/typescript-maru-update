@@ -4,7 +4,7 @@ export type MaruMangaModel = mongoose.Document & {
     titleId: string,
     title: string,
 
-    ep: string,
+    ep: Number,
     url: string,
     date: string
 };
@@ -14,7 +14,7 @@ const maruMangaSchema = new mongoose.Schema({
     titleId: { type: String, unique: true },
     title: String,
 
-    ep: String,
+    ep: Number,
     url: String,
     date: String
 });
