@@ -5,6 +5,8 @@ import { Response, Request, NextFunction } from "express";
 import { default as MaruManga, MaruMangaModel } from "../models/MaruManga";
 import { default as TelegramUser, Subscription, TelegramUserModel } from "../models/TelegramUser";
 
+
+
 export let getCrawl = (req: Request, res: Response) => {
 
     const funcCallBack = function (msg: string) {
@@ -13,12 +15,11 @@ export let getCrawl = (req: Request, res: Response) => {
 
     crawl(funcCallBack);
 };
-export let crawl = function (callback: (msg: string) => void) {
+export let crawl = async function (callback: (msg: string) => void) {
 
     const driver = new Builder()
         .withCapabilities(Capabilities.phantomjs())
         .build();
-
     driver.get("http://minitoon.net/bbs/board.php?bo_table=9999&page=1");
     driver.findElement(By.id("gall_ul")).getAttribute("innerHTML").then((html: string) => {
         const $ = cheerio.load(html);
@@ -52,7 +53,6 @@ export let crawl = function (callback: (msg: string) => void) {
                 url: url,
                 date: date
             });
-            winston.log("info", "maruManga saved", { anyString: ep });
 
             maruManga.save().then(function (doc) {
                 winston.log("info", "Mongoose saved", { anyString: doc.get("title") });
@@ -60,7 +60,9 @@ export let crawl = function (callback: (msg: string) => void) {
         });
 
         callback("Done");
+    }).then(function (v) {
+        driver.quit();
     });
 
-    driver.quit();
+
 };

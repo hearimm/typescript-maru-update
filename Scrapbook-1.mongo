@@ -1,0 +1,3 @@
+db.marumangas.find({
+    title: /백.*투.*더.*엄마/
+})

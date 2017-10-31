@@ -42,6 +42,17 @@ import * as contactController from "./controllers/contact";
 import * as passportConfig from "./config/passport";
 
 /**
+ * crawl interval
+ */
+
+function intervalFunc() {
+  crawlController.crawl(function (msg) {
+    console.log(msg);
+  });
+}
+
+setInterval(intervalFunc, 1000 * 1 /*sec*/ * 60 * 30/*min*/);
+/**
  * Create TelegramBot server
  */
 
@@ -52,31 +63,24 @@ const HYUK_CHAT_ID = process.env.HYUK_CHAT_ID;
 bot.on("message", (msg: TelegramBot.Message) => {
 
   const hi = "hi";
+  const bye = "bye";
+  const crawl = "crawl";
+  const mini = "mini";
+
+  const funcCallBack = function (resultMsg: string) {
+    bot.sendMessage(msg.chat.id, resultMsg);
+  };
+
   if (msg.text.toLowerCase().indexOf(hi) === 0) {
     bot.sendMessage(msg.chat.id, "Hello dear user" + msg.from.first_name);
-  }
-
-  const bye = "bye";
-  if (msg.text.toLowerCase().includes(bye)) {
+  } else if (msg.text.toLowerCase().includes(bye)) {
     bot.sendMessage(msg.chat.id, "Hope to see you around again , Bye");
-  }
-
-  const crawl = "crawl";
-  if (msg.text.toLowerCase().includes(crawl)) {
-    const funcCallBack = function (resultMsg: string) {
-      bot.sendMessage(msg.chat.id, resultMsg);
-    };
-
+  } else if (msg.text.toLowerCase().includes(crawl)) {
     crawlController.crawl(funcCallBack);
-  }
-
-  const mini = "mini";
-  if (msg.text.toLowerCase().includes(mini)) {
-    const funcCallBack = function (resultMsg: string) {
-      bot.sendMessage(msg.chat.id, resultMsg);
-    };
-
-    minitoonController.findMinitoon(funcCallBack, msg);
+  } else if (msg.text.toLowerCase().includes(mini)) {
+    minitoonController.findMyComics(funcCallBack, msg);
+  } else {
+    minitoonController.findAllComics(funcCallBack, msg);
   }
 
 });
