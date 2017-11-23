@@ -23,7 +23,8 @@ const MongoStore = mongo(session);
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.config({ path: ".env.example" });
+// dotenv.config({ path: ".env.example" });
+dotenv.config({ path: ".env.dev" });
 
 
 /**
@@ -57,7 +58,7 @@ setInterval(intervalFunc, 1000 * 1 /*sec*/ * 60 * 30/*min*/);
  */
 
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
-const HYUK_CHAT_ID = process.env.HYUK_CHAT_ID;
+// const HYUK_CHAT_ID = process.env.HYUK_CHAT_ID;
 
 
 bot.on("message", (msg: TelegramBot.Message) => {
