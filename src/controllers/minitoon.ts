@@ -3,6 +3,8 @@ import * as TelegramBot from "node-telegram-bot-api";
 import { default as MaruManga, MaruMangaModel } from "../models/MaruManga";
 import { default as TelegramUser, Subscription, TelegramUserModel } from "../models/TelegramUser";
 
+// minitoon -> findComics interface 변경
+
 export let findMyComics = function (callback: (resultMsg: string) => void, msg: TelegramBot.Message) {
 
     const userSubscriptionQuery = TelegramUser.findOne()

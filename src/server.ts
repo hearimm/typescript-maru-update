@@ -34,8 +34,12 @@ import * as homeController from "./controllers/home";
 import * as userController from "./controllers/user";
 import * as apiController from "./controllers/api";
 import * as crawlController from "./controllers/crawl";
-import * as minitoonController from "./controllers/minitoon";
 import * as contactController from "./controllers/contact";
+
+// import * as minitoonController from "./controllers/minitoon";
+import { FindComicsUtil } from "./controllers/findComics";
+import { FindMyComics } from "./controllers/findMyComics";
+import { FindAllComics } from "./controllers/findAllComics";
 
 /**
  * API keys and Passport configuration.
@@ -67,6 +71,7 @@ bot.on("message", (msg: TelegramBot.Message) => {
   const bye = "bye";
   const crawl = "crawl";
   const mini = "mini";
+  let findComicsUtil: FindComicsUtil;
 
   const funcCallBack = function (resultMsg: string) {
     bot.sendMessage(msg.chat.id, resultMsg);
@@ -79,9 +84,11 @@ bot.on("message", (msg: TelegramBot.Message) => {
   } else if (msg.text.toLowerCase().includes(crawl)) {
     crawlController.crawl(funcCallBack);
   } else if (msg.text.toLowerCase().includes(mini)) {
-    minitoonController.findMyComics(funcCallBack, msg);
+    findComicsUtil = new FindMyComics();
+    findComicsUtil.exec(funcCallBack, msg);
   } else {
-    minitoonController.findAllComics(funcCallBack, msg);
+    findComicsUtil = new FindAllComics();
+    findComicsUtil.exec(funcCallBack, msg);
   }
 
 });
