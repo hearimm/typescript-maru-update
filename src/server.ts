@@ -77,6 +77,7 @@ bot.on("message", (msg: TelegramBot.Message) => {
     bot.sendMessage(msg.chat.id, resultMsg);
   };
 
+  // TODO : switch 제어 역전 interface로 적용
   if (msg.text.toLowerCase().indexOf(hi) === 0) {
     bot.sendMessage(msg.chat.id, "Hello dear user" + msg.from.first_name);
   } else if (msg.text.toLowerCase().includes(bye)) {
