@@ -71,7 +71,8 @@
     "request": "^2.78.0",
     "selenium-webdriver": "^3.6.0",
     "node-sass": "^4.5.2",
-    "winston": "^2.4.0"
+    "winston": "^2.4.0",
+    "typescript": "^2.4.0"
   },
   "devDependencies": {
     "@types/async": "^2.0.40",
@@ -102,7 +103,6 @@
     "supertest": "^2.0.1",
     "ts-jest": "^19.0.8",
     "tslint": "^5.0.0",
-    "typescript": "^2.4.0"
   },
   "engines": {
     "node": "8.7.0"
