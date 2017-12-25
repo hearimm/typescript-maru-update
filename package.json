@@ -93,9 +93,7 @@
     "selenium-webdriver": "^3.6.0",
     "node-sass": "^4.5.2",
     "winston": "^2.4.0",
-    "typescript": "^2.4.0"
-  },
-  "devDependencies": {
+    "typescript": "^2.4.0",
     "concurrently": "^3.4.0",
     "jest": "^19.0.2",
     "nodemon": "^1.11.0",
@@ -104,6 +102,7 @@
     "ts-jest": "^19.0.8",
     "tslint": "^5.0.0"
   },
+  "devDependencies": {},
   "engines": {
     "node": "8.7.0"
   }
