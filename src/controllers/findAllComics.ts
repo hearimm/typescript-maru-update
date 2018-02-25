@@ -11,28 +11,17 @@ export class FindAllComics implements FindComicsUtil {
 
         winston.log("info", "query is", { anyString: maruMangaQuery.getQuery() });
 
-        maruMangaQuery.exec(function (err: any, res: Document[]) {
-            this.printLogQueryExec(err, res);
-            this.resultCallBack(res, callback);
+
+        const promise = maruMangaQuery.exec();
+
+        promise.then(function (res: Document[]) {
+            res.forEach((doc) => {
+                callback(doc.get("titleId") + "\n" + doc.get("url"));
+            });
         });
     }
 
     private findQuery(text: String): DocumentQuery<Document[], Document> {
         return MaruManga.find().select("titleId url ep").where("title", new RegExp(text.trim().replace(" ", ".*")));
-    }
-
-    private resultCallBack(res: Document[], callback: (resultMsg: string) => void) {
-        res.forEach((doc) => {
-            callback(doc.get("titleId") + "\n" + doc.get("url"));
-        });
-    }
-
-    private printLogQueryExec(err: any, res: Document[]) {
-        if (err) {
-            winston.log("error", "error msg is ", { anyString: err });
-        }
-        else {
-            winston.log("info", "findAllComics msg is ", { anyString: res });
-        }
     }
 }
